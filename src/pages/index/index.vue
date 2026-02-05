@@ -1,14 +1,19 @@
 <template>
-  <view>
-    <uni-badge text="1"></uni-badge>
-    <uni-badge text="2" type="success"></uni-badge>
-    <uni-badge text="3" type="primary" :inverted="true"></uni-badge>
+  {{ userStore?.userInfo }}
+  {{ userStore.isLoggedIn }}
+  <view @click="toLogin">
+    去登录
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-const title = ref('Hello')
-</script>
+import { useUserStore } from '@/stores/user';
 
-<style lang="scss"></style>
+const userStore = useUserStore()
+
+const toLogin = () => {
+  uni.navigateTo({
+    url: "/pages/login/login"
+  })
+}
+</script>
