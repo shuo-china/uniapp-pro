@@ -1,7 +1,8 @@
 <template>
-    <view v-if="!loading">
-        <button v-if="isMobileBound" @tap="handleLogin">登录</button>
-        <button v-else open-type="getPhoneNumber" @getphonenumber="handleLoginWithoutMobile">授权登录</button>
+    <view class="container">
+        <button v-if="isMobileBound" class="login-btn" @tap="handleLogin">登录</button>
+        <button v-else class="login-btn" open-type="getPhoneNumber"
+            @getphonenumber="handleLoginWithoutMobile">授权登录</button>
     </view>
 </template>
 
@@ -13,7 +14,6 @@ import { onLoad } from "@dcloudio/uni-app";
 
 const userStore = useUserStore()
 
-const loading = ref(true)
 const isMobileBound = ref(false)
 
 const handleLogin = () => {
@@ -35,10 +35,28 @@ const handleLoginWithoutMobile = (e) => {
 }
 
 onLoad(() => {
+    uni.showLoading({
+        title: "加载中",
+        mask: true
+    })
     isMobileBoundApi().then(res => {
         isMobileBound.value = res.is_mobile_bound
     }).finally(() => {
-        loading.value = false
+        uni.hideLoading()
     })
 })
 </script>
+
+<style lang="scss" scoped>
+.container {
+    padding: 0 12px;
+
+    .login-btn {
+        font-size: 16px;
+        padding: 2px 0;
+        color: white;
+        background-color: #876e49;
+        border-radius: 50px;
+    }
+}
+</style>

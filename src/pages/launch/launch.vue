@@ -4,7 +4,6 @@
 <script setup lang="ts">
 import { onLoad } from "@dcloudio/uni-app";
 import { useUserStore } from "@/stores/user";
-import { isMobileBoundApi } from '@/api/user'
 import { IS_LOGGED_IN } from "@/utils/constants";
 
 const userStore = useUserStore()
@@ -22,7 +21,7 @@ onLoad(async () => {
 
     uni.hideLoading()
     uni.reLaunch({
-        url: "/pages/index/index"
+        url: "/pages/home/home"
     })
 })
 </script>

@@ -4,6 +4,7 @@
   <view @click="toLogin">
     去登录
   </view>
+
 </template>
 
 <script setup lang="ts">
