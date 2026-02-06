@@ -33,9 +33,9 @@ export function bindMobileApi(
   });
 }
 
-export function isMobileBoundApi(options?: HttpRequestConfig) {
+export function unBindMobileApi(options?: HttpRequestConfig) {
   return request({
-    url: "/user/isMobileBound",
+    url: "/user/unBindMobile",
     method: "GET",
     ...options,
   });

@@ -1,8 +1,10 @@
 <template>
   {{ userStore?.userInfo }}
-  {{ userStore.isLoggedIn }}
-  <view @click="toLogin">
+  <view v-if="!userStore.isLoggedIn" @click="toLogin">
     去登录
+  </view>
+  <view v-else @click="userStore.unBindMobile()">
+    解绑授权
   </view>
 
 </template>

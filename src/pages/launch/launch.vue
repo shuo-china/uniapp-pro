@@ -4,7 +4,6 @@
 <script setup lang="ts">
 import { onLoad } from "@dcloudio/uni-app";
 import { useUserStore } from "@/stores/user";
-import { IS_LOGGED_IN } from "@/utils/constants";
 
 const userStore = useUserStore()
 
@@ -14,9 +13,9 @@ onLoad(async () => {
         mask: true
     })
 
-    await userStore.getAccessToken()
-    if (uni.getStorageSync(IS_LOGGED_IN)) {
-        await userStore.login()
+    const { is_mobile_bound } = await userStore.getToken()
+    if (is_mobile_bound) {
+        await userStore.getUserInfo()
     }
 
     uni.hideLoading()

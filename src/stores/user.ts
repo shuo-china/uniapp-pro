@@ -1,5 +1,9 @@
-import { getAccessTokenApi, getCurrentUserInfoApi } from "@/api/user";
-import { IS_LOGGED_IN } from "@/utils/constants";
+import {
+  getAccessTokenApi,
+  getCurrentUserInfoApi,
+  unBindMobileApi,
+} from "@/api/user";
+
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
@@ -14,7 +18,10 @@ export const useUserStore = defineStore("user", () => {
 
   const isLoggedIn = computed(() => userInfo.value !== null);
 
-  const getAccessToken = () => {
+  function getToken(): Promise<{
+    access_token: string;
+    is_mobile_bound: boolean;
+  }> {
     return new Promise((resolve, reject) => {
       uni.login({
         provider: "weixin",
@@ -33,30 +40,28 @@ export const useUserStore = defineStore("user", () => {
         },
       });
     });
-  };
+  }
 
-  const login = async () => {
-    const { id, mobile } = await getCurrentUserInfoApi();
-    if (mobile) {
-      userInfo.value = { id, mobile };
-      uni.setStorageSync(IS_LOGGED_IN, true);
-    } else {
-      userInfo.value = null;
-      uni.removeStorageSync(IS_LOGGED_IN);
-    }
-  };
+  async function getUserInfo() {
+    const res = await getCurrentUserInfoApi();
+    userInfo.value = {
+      id: res.id,
+      mobile: res.mobile,
+    };
+    return res;
+  }
 
-  const logout = () => {
+  async function unBindMobile() {
+    await unBindMobileApi();
     userInfo.value = null;
-    uni.removeStorageSync(IS_LOGGED_IN);
-  };
+  }
 
   return {
     token,
     userInfo,
     isLoggedIn,
-    getAccessToken,
-    login,
-    logout,
+    getToken,
+    getUserInfo,
+    unBindMobile,
   };
 });
