@@ -20,8 +20,7 @@ import { UserLevel } from '@/utils/enums';
 const userStore = useUserStore()
 
 const unBindMobile = async () => {
-  await unBindMobileApi()
-  await userStore.getAccessToken()
+  await userStore.unBindMobile()
   uni.showToast({
     title: "解绑成功",
     icon: "success"
