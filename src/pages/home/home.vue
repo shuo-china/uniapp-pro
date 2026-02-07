@@ -13,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { unBindMobileApi } from '@/api/user';
 import { useUserStore } from '@/stores/user';
 import { UserLevel } from '@/utils/enums';
 
