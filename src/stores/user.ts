@@ -1,11 +1,13 @@
 import {
+  bindMobileApi,
   getAccessTokenApi,
   getCurrentUserInfoApi,
   unBindMobileApi,
 } from "@/api/user";
+import { UserLevel } from "@/utils/enums";
 
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 interface UserInfo {
   id: number;
@@ -15,13 +17,9 @@ interface UserInfo {
 export const useUserStore = defineStore("user", () => {
   const token = ref<Nullable<string>>(null);
   const userInfo = ref<Nullable<UserInfo>>(null);
+  const userLevel = ref<UserLevel>(UserLevel.Anonymous);
 
-  const isLoggedIn = computed(() => userInfo.value !== null);
-
-  function getToken(): Promise<{
-    access_token: string;
-    is_mobile_bound: boolean;
-  }> {
+  function getAccessToken() {
     return new Promise((resolve, reject) => {
       uni.login({
         provider: "weixin",
@@ -30,7 +28,8 @@ export const useUserStore = defineStore("user", () => {
             getAccessTokenApi({
               code: res.code,
             }).then((res) => {
-              token.value = res.access_token;
+              token.value = res.token_info.access_token;
+              userLevel.value = res.level;
               resolve(res);
             });
           }
@@ -51,17 +50,27 @@ export const useUserStore = defineStore("user", () => {
     return res;
   }
 
+  async function bindMobile(code: string) {
+    await bindMobileApi({
+      code,
+    });
+    await getAccessToken();
+    await getUserInfo();
+  }
+
   async function unBindMobile() {
     await unBindMobileApi();
+    await getAccessToken();
     userInfo.value = null;
   }
 
   return {
     token,
     userInfo,
-    isLoggedIn,
-    getToken,
+    userLevel,
+    getAccessToken,
     getUserInfo,
+    bindMobile,
     unBindMobile,
   };
 });

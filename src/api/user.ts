@@ -7,7 +7,7 @@ export function getAccessTokenApi(
 ) {
   return request({
     method: "POST",
-    url: "/access/createToken",
+    url: "/access/createAccessToken",
     data,
     ...options,
   });

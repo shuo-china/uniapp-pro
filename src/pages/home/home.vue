@@ -1,18 +1,32 @@
 <template>
-  {{ userStore?.userInfo }}
-  <view v-if="!userStore.isLoggedIn" @click="toLogin">
+
+  <button v-if="userStore.userLevel !== UserLevel.Bound" @click="toLogin">
     去登录
-  </view>
-  <view v-else @click="userStore.unBindMobile()">
-    解绑授权
+  </button>
+  <view v-if="userStore.userLevel === UserLevel.Bound">
+    {{ userStore.userInfo }}
+    <button @click="unBindMobile">
+      解绑授权
+    </button>
   </view>
 
 </template>
 
 <script setup lang="ts">
+import { unBindMobileApi } from '@/api/user';
 import { useUserStore } from '@/stores/user';
+import { UserLevel } from '@/utils/enums';
 
 const userStore = useUserStore()
+
+const unBindMobile = async () => {
+  await unBindMobileApi()
+  await userStore.getAccessToken()
+  uni.showToast({
+    title: "解绑成功",
+    icon: "success"
+  })
+}
 
 const toLogin = () => {
   uni.navigateTo({

@@ -12,11 +12,7 @@ const userStore = useUserStore()
 
 const login = (e) => {
     if (e.detail.code) {
-        bindMobileApi({
-            code: e.detail.code
-        }).then(() => {
-            return userStore.getUserInfo()
-        }).then(() => {
+        userStore.bindMobile(e.detail.code).then(() => {
             uni.navigateBack()
         })
     }

@@ -4,6 +4,7 @@
 <script setup lang="ts">
 import { onLoad } from "@dcloudio/uni-app";
 import { useUserStore } from "@/stores/user";
+import { UserLevel } from "@/utils/enums";
 
 const userStore = useUserStore()
 
@@ -13,8 +14,8 @@ onLoad(async () => {
         mask: true
     })
 
-    const { is_mobile_bound } = await userStore.getToken()
-    if (is_mobile_bound) {
+    await userStore.getAccessToken()
+    if (userStore.userLevel === UserLevel.Bound) {
         await userStore.getUserInfo()
     }
 
