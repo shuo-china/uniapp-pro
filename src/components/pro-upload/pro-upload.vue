@@ -162,6 +162,7 @@ const prviewImage = (index: number) => {
         display: flex;
         align-items: center;
         justify-content: center;
+        line-height: 1;
     }
 }
 
