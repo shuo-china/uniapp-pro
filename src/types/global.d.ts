@@ -9,4 +9,10 @@ declare global {
     label: string;
     value: string | number;
   };
+
+  type Pagination<T = any> = {
+    page: number;
+    total: number;
+    data: T[];
+  };
 }
