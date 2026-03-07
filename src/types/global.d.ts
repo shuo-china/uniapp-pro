@@ -6,7 +6,7 @@ declare global {
   type Nullable<T> = null | T;
 
   type OptionItem = {
-    label: string;
+    text: string;
     value: string | number;
   };
 
