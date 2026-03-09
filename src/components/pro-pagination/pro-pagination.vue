@@ -1,6 +1,6 @@
 <template>
     <slot :data="data"></slot>
-    <view class="pagination-wrapper">
+    <view v-if="data?.length" class="pagination-wrapper">
         <uni-pagination v-model="currentPage" :total="total" :page-size="pageSize" />
     </view>
 </template>

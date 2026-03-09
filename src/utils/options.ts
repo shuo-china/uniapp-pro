@@ -1,4 +1,7 @@
-export function getOptionItemByValue(options: (OptionItem & Record<string, any>)[],, value: any) {
+export function getOptionItemByValue(
+  options: (OptionItem & Record<string, any>)[],
+  value: any,
+) {
   return options.find((item) => item.value === value);
 }
 
