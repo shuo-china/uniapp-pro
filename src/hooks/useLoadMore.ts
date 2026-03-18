@@ -32,6 +32,7 @@ function useLoadMore<R = any, P extends unknown[] = any>(
         flag = false;
         data.value = [];
       }
+      options?.onBefore?.(args);
     },
     onSuccess: (res, args) => {
       const page = args[0]?.[pageKey];
@@ -40,6 +41,7 @@ function useLoadMore<R = any, P extends unknown[] = any>(
       page === 1 ? (data.value = resData) : data.value.push(...resData);
       isLastPage.value = pageSize * page >= res?.[totalKey];
       flag = true;
+      options?.onSuccess?.(res, args);
     },
   };
 
